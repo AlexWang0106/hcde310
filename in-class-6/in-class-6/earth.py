@@ -27,3 +27,9 @@ if r.status_code == 200:
         print("No photos available for today.")
 else:
     print(f"Error: Received status code {r.status_code} from NASA API.")
+
+    def newest_photo (photos):
+       for photo in photos:
+           if photo['date'] == max(photo['date'] for photo in photos):
+               return photo
+           print("The newest photo is:", newest_photo(data))
