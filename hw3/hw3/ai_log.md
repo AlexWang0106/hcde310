@@ -17,7 +17,7 @@ didn't see this part and went asking straght away
 
 ## 2. Chat (AI only)
 *paste the whole conversation, your messages and the AI's replies in order, or a share link from the Share button (the link in your address bar only works for you). No AI? Write "No AI used."*
-
+https://claude.ai/share/5313923a-a230-48d9-ac05-a850daf4c39c
 
 ## 3. Predict, then compare
 *before you run the function, write what you think the file will contain for the sample data (`check.py` uses it) or for your search. Then paste what it actually contains. (A wrong prediction gets full credit. Don't edit it after running.)*
