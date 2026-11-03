@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artwork Results</title>
+</head>
+<body>
+    <h1>Results for {{ keyword }}</h1>
+
+    <ul>
+        {% for artwork in artworks %}
+            <li>
+                <strong>{{ artwork.title }}</strong>
+                — {{ artwork.artist_title or "Unknown artist" }}
+                ({{ artwork.date_display or "Unknown date" }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/">Back to search</a>
+</body>
+</html>
