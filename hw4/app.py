@@ -1,5 +1,5 @@
 # HW4 - Art Institute of Chicago Search App
-
+from api import search_art
 # Home Route (/)
 # 1. Create a Flask route for the homepage
 # 2. Display home.html with a search form
@@ -21,24 +21,7 @@ def results():
             "home.html",
             message="Please enter a search term."
         )
-    artworks = [
-        {
-            "title": "Test Artwork One",
-            "artist_title": "Test Artist A",
-            "date_display": "1900"
-        },
-        {
-            "title": "Test Artwork Two",
-            "artist_title": "Test Artist B",
-            "date_display": "1950"
-        },
-        {
-            "title": "Test Artwork Three",
-            "artist_title": None,
-            "date_display": None
-        }
-    ]
-
+    artworks = search_art(keyword)
     return render_template(
         "results.html",
         artworks=artworks,

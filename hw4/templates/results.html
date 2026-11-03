@@ -1,22 +1,221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Artwork Results</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artwork Results – Art Institute of Chicago</title>
+
+<style>
+  /* AI-written: Adapted from the previous artwork finder design. */
+  :root {
+    --ink: #1d2433;
+    --paper: #f4f5f7;
+    --line: #b8bfcc;
+    --accent: #2b4fd8;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e6e9f0;
+      --paper: #151820;
+      --line: #3a4152;
+      --accent: #8aa4ff;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 24px;
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.4 system-ui, sans-serif;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  input, button {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  button {
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  #searchForm {
+    display: flex;
+    gap: 8px;
+    flex: 1 1 280px;
+    max-width: 500px;
+  }
+
+  #searchForm input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 32px;
+  }
+
+  @media (max-width: 800px) {
+    #grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    #grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .frame {
+    aspect-ratio: 4 / 3;
+    border: 2px solid var(--ink);
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .no-image {
+    padding: 16px;
+    text-align: center;
+  }
+
+  figcaption {
+    margin-top: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  figcaption b {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  #status {
+    margin: 0 0 20px;
+  }
+
+  .back {
+    display: inline-block;
+    margin-top: 32px;
+    color: var(--accent);
+  }
+</style>
 </head>
+
 <body>
-    <h1>Results for {{ keyword }}</h1>
 
-    <ul>
-        {% for artwork in artworks %}
-            <li>
-                <strong>{{ artwork.title }}</strong>
-                — {{ artwork.artist_title or "Unknown artist" }}
-                ({{ artwork.date_display or "Unknown date" }})
-            </li>
-        {% endfor %}
-    </ul>
+<header>
+  <form id="searchForm" action="/results" method="get">
+    <label for="q">Search</label>
 
-    <a href="/">Back to search</a>
+    <input
+      id="q"
+      name="author_search"
+      type="search"
+      value="{{ keyword }}"
+      placeholder="Search artworks"
+    >
+
+    <button type="submit">Search</button>
+  </form>
+</header>
+
+<p id="status" role="status">
+  Results for "{{ keyword }}"
+</p>
+
+<!-- AI-written: Generate artwork cards from Flask results. -->
+<main id="grid">
+
+  {% for artwork in artworks %}
+
+  <figure>
+
+    <div class="frame">
+
+      {% if artwork.image_id %}
+
+      <img
+        src="https://www.artic.edu/iiif/2/{{ artwork.image_id }}/full/843,/0/default.jpg"
+        alt="{{ artwork.title or 'Artwork' }}"
+        loading="lazy"
+      >
+
+      {% else %}
+
+      <p class="no-image">Image unavailable</p>
+
+      {% endif %}
+
+    </div>
+
+    <figcaption>
+      <b>{{ artwork.title or "Untitled" }}</b>
+
+      {{ artwork.artist_title or "Unknown artist" }}
+
+      <div>
+        {{ artwork.date_display or "Unknown date" }}
+      </div>
+
+      <div>
+        {{ artwork.medium_display or "Unknown medium" }}
+      </div>
+    </figcaption>
+
+  </figure>
+
+  {% endfor %}
+
+</main>
+
+<a class="back" href="/">Back to search</a>
+
 </body>
 </html>
